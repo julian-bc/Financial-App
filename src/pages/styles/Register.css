@@ -1,0 +1,171 @@
+/* Register.css */
+
+/* Contenedor principal para centrar la tarjeta en pantalla */
+.register-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8fafc; /* Gris azulado muy suave */
+  padding: 40px 20px;
+  font-family: 'Trebuchet MS', sans-serif;
+  box-sizing: border-box;
+}
+
+/* Tarjeta blanca central */
+.register-card {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 550px; /* Un poco más ancha para las filas dobles */
+}
+
+.register-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.register-subtitle {
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Espacio pequeño, el margen real lo da el form-group */
+}
+
+/* Filas con dos columnas (Nombre/Apellido y Tipo/Número) */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Grupos de formulario: Label + Input + Error */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+  min-height: 85px; /* Altura mínima para que los errores no muevan el diseño */
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #475569;
+  margin-bottom: 6px;
+  display: block;
+  letter-spacing: 0.5px;
+}
+
+/* Estilo base para Inputs y Selects */
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #1e293b;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background-color: #ffffff;
+}
+
+.form-input::placeholder {
+  color: #cbd5e1;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #0284c7; /* Azul bancario */
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
+}
+
+/* Estilo para errores de Zod */
+.form-input.input-error {
+  border-color: #ef4444;
+  background-color: #fffafb;
+}
+
+.form-input.input-error:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.error-msg {
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Botón de registro */
+.btn-register {
+  width: 100%;
+  padding: 16px;
+  background-color: #0284c7;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 10px;
+}
+
+.btn-register:hover {
+  background-color: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+}
+
+.btn-register:active {
+  transform: translateY(0);
+}
+
+/* Footer con enlace al login */
+.register-footer {
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 24px;
+}
+
+.register-footer a {
+  color: #0284c7;
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.register-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Adaptabilidad para móviles */
+@media (max-width: 500px) {
+  .form-row {
+    grid-template-columns: 1fr; /* Una sola columna en celulares */
+    gap: 0;
+  }
+  
+  .register-card {
+    padding: 30px 20px;
+  }
+  
+  .register-title {
+    font-size: 24px;
+  }
+}
