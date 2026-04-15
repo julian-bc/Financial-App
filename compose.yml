@@ -1,0 +1,7 @@
+services: 
+  financial-app-frontend:
+    build: .
+    image: financial-app:latest
+    container_name: financial-app
+    ports:
+      - "5173:5173"
