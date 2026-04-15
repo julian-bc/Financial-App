@@ -1,0 +1,95 @@
+.account-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.controls-wrapper {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.btn-switch {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-family: 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #64748b;
+  background-color: transparent;
+}
+
+.btn-switch:hover {
+  background-color: #f1f5f9;
+}
+
+/* Estado activo para Ahorros */
+.btn-switch.active-saving {
+  background-color: #f59e0b;
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Estado activo para Corriente */
+.btn-switch.active-current {
+  background-color: #0284c7;
+  color: white;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+.btn-switch:active {
+  transform: scale(0.95);
+}
+
+/* Contenedor de las acciones (Depositar, Retirar, Transferir) */
+.actions-wrapper {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.btn-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: none;
+  padding: 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 90px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-action:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-action:active {
+  transform: scale(0.95);
+}
+
+/* Colores específicos */
+.btn-action.deposit { color: #22c55e; }
+.btn-action.withdraw { color: #ef4444; }
+.btn-action.transfer { color: #a855f7; }
+
+.btn-action span {
+  color: #475569;
+}
