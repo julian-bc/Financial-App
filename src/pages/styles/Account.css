@@ -4,8 +4,6 @@
   align-items: center;
   justify-content: center;
   gap: 32px;
-  background-color: #f8fafc;
-  min-height: 100vh;
   padding: 20px;
   box-sizing: border-box;
 }

@@ -1,0 +1,72 @@
+.transactions-container {
+  font-family: 'Trebuchet MS', sans-serif;
+  width: 100%;
+  max-width: 560px;
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  margin-top: 20px;
+}
+
+.transactions-title {
+  font-size: 16px;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Colores de iconos */
+.icon-container.consignment { background: #dcfce7; color: #166534; }
+.icon-container.withdrawal { background: #fee2e2; color: #991b1b; }
+.icon-container.transference { background: #f3e8ff; color: #6b21a8; }
+
+.transaction-info {
+  flex: 1;
+}
+
+.info-main {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.type-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: #334155;
+}
+
+.amount-positive { color: #16a34a; font-weight: 700; font-size: 14px; }
+.amount-negative { color: #dc2626; font-weight: 700; font-size: 14px; }
+
+.info-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.date-text { text-transform: capitalize; }

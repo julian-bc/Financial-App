@@ -11,3 +11,7 @@ html, body {
   width: 100%;
   overflow-x: hidden; 
 }
+
+body {
+  background-color: #f8fafc;
+}
