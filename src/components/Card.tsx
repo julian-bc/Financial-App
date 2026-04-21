@@ -1,5 +1,7 @@
 import { ShieldCheck, ShieldOff, Wifi } from 'lucide-react';
 import './styles/Card.css';
+import { useState } from 'react';
+import HubShowNumbers from "./HubShowNumbers"
 
 interface CardProps {
   cardNumber: string;
@@ -17,6 +19,14 @@ const statusConfig: Record<'ACTIVE' | 'INACTIVE' | 'CANCELLED', { label: string;
   CANCELLED: { label: 'CANCELADA', className: 'status-cancelled' },
 };
 
+const formatCardNumber = (number: string) => {
+  return "**** **** **** " + number.slice(-4);
+}
+
+const formatCardAmount = (amount: string) => {
+  return amount.replaceAll(amount, "*".repeat(amount.length));
+}
+
 export default function Card({ 
   cardNumber, 
   cardHolder, 
@@ -27,6 +37,8 @@ export default function Card({
   currency = 'COP'
 }: CardProps) {
   const cardTypeClass = type === 'SAVING' ? 'card-saving' : 'card-current';
+  const [showAmount, setShowAmount] = useState<boolean>(false);
+  const [showCardNumber, setShowCardNumber] = useState<boolean>(false);
   const st = statusConfig[status];
 
   return (
@@ -61,7 +73,6 @@ export default function Card({
         {/* Media: Chip y GMF */}
         <div className='card-row-middle'>
           <div className='security-chip'></div>
-          
           <div className='gmf-tag'>
             {isExemptGMF ? (
               <><ShieldCheck size={14} /> <span>Exento GMF</span></>
@@ -73,7 +84,14 @@ export default function Card({
 
         {/* Inferior: Número y Titular */}
         <div className='card-row-bottom'>
-          <p className='display-card-number'>{cardNumber}</p>
+          <p className='display-card-number'>
+            <HubShowNumbers
+              number={cardNumber}
+              state={showCardNumber}
+              changeState={setShowCardNumber}
+              formatNumber={formatCardNumber}
+            />
+          </p>
           
           <div className='footer-flex'>
             <div className='holder-details'>

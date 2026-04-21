@@ -6,9 +6,7 @@
   aspect-ratio: 1.6 / 1;
   border-radius: 18px;
   position: relative;
-  overflow: hidden;
   color: white;
-  cursor: pointer;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
@@ -53,13 +51,29 @@
 
 /* --- TIPOGRAFÍA --- */
 .account-type-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; }
-.account-balance { font-size: 24px; font-weight: 700; margin-top: 4px; }
-.display-card-number { 
+.account-balance, .account-balance span {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 4px;
+  max-width: 248px;
+  white-space: nowrap;
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+.display-card-number, .display-card-number span { 
   font-family: 'Courier New', Courier, monospace; 
   font-size: 18px; 
   letter-spacing: 3px; 
   margin: 12px 0;
+  display: flex;
+  flex: auto;
+  align-items: center;
+  gap: 0.7rem;
 }
+.show {
+  cursor: pointer;
+}
+
 .label-tiny { font-size: 9px; opacity: 0.6; }
 .holder-name-text { font-size: 14px; font-weight: 600; margin: 0; }
 

@@ -1,9 +1,9 @@
 export const cardsData = [
   {
     id: 1,
-    cardNumber: "**** **** **** 5678",
+    cardNumber: "pepe pepe pepe 5678",
     cardHolder: "Nolan Grayson",
-    balance: 1250050.75,
+    balance: 1250005.75,
     type: "SAVING",
     status: "ACTIVE",
     isExemptGMF: true,
