@@ -5,3 +5,6 @@ services:
     container_name: financial-app
     ports:
       - "5173:5173"
+    command: npm run prod -- --host 0.0.0.0
+    env_file:
+      - ./.env.production
