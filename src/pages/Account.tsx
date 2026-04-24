@@ -6,14 +6,17 @@ import { cardsData } from '../assets/mockData/card';
 import Navbar from '../components/Navbar';
 import TransactionList from '../components/TransactionList';
 import { mockTransactions } from '../assets/mockData/transactions';
+import DepositModal from '../components/modals/DepositModal';
+import WithdrawModal from '../components/modals/WithdrawModal';
+import TransferModal from '../components/modals/TransferModal';
 
 function Account() {
   const [activeType, setActiveType] = useState<'SAVING' | 'CURRENT'>('SAVING');
   const currentCard = cardsData.find(c => c.type === activeType) || cardsData[0];
 
-  const handleDeposit = () => console.log('Acción: Depositar');
-  const handleWithdraw = () => console.log('Acción: Retirar');
-  const handleTransfer = () => console.log('Acción: Transferir');
+  const [isDepositOpen, setIsDepositOpen] = useState(false);
+  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+  const [isTransferOpen, setIsTransferOpen] = useState(false);
 
   return (
     <>
@@ -27,17 +30,17 @@ function Account() {
         />
 
         <div className='actions-wrapper'>
-          <button className='btn-action deposit' onClick={handleDeposit}>
+          <button className='btn-action deposit' onClick={() => setIsDepositOpen(true)}>
             <PlusCircle size={20} />
             <span>Depositar</span>
           </button>
 
-          <button className='btn-action withdraw' onClick={handleWithdraw}>
+          <button className='btn-action withdraw' onClick={() => setIsWithdrawOpen(true)}>
             <MinusCircle size={20} />
             <span>Retirar</span>
           </button>
 
-          <button className='btn-action transfer' onClick={handleTransfer}>
+          <button className='btn-action transfer' onClick={() => setIsTransferOpen(true)}>
             <Send size={20} />
             <span>Transferir</span>
           </button>
@@ -60,6 +63,18 @@ function Account() {
 
         <TransactionList transactions={mockTransactions}/>
       </div>
+
+      {isDepositOpen && (
+        <DepositModal onClose={() => setIsDepositOpen(false)} />
+      )}
+      
+      {isWithdrawOpen && (
+        <WithdrawModal onClose={() => setIsWithdrawOpen(false)} />
+      )}
+      
+      {isTransferOpen && (
+        <TransferModal onClose={() => setIsTransferOpen(false)} />
+      )}
     </>
 
   );

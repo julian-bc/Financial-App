@@ -6,8 +6,8 @@ export const transactionType = {
 
 export interface TransactionRequest {
   amount: number;
-  originProductId: number;
-  destinyProductId: number;
+  originProductId?: number | null;
+  destinyProductId?: number | null;
 }
 
 export interface TransactionResponse extends TransactionRequest {
