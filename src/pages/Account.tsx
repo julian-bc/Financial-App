@@ -9,8 +9,11 @@ import { mockTransactions } from '../assets/mockData/transactions';
 import DepositModal from '../components/modals/DepositModal';
 import WithdrawModal from '../components/modals/WithdrawModal';
 import TransferModal from '../components/modals/TransferModal';
+import useSession from '../auth/useSession';
 
 function Account() {
+  const { user } = useSession();
+
   const [activeType, setActiveType] = useState<'SAVING' | 'CURRENT'>('SAVING');
   const currentCard = cardsData.find(c => c.type === activeType) || cardsData[0];
 
@@ -20,7 +23,7 @@ function Account() {
 
   return (
     <>
-      <Navbar name={currentCard.cardHolder}/>
+      <Navbar name={user.data.firstName}/>
 
       <div className='account-container'>
         <Card 

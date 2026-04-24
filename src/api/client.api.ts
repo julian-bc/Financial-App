@@ -9,6 +9,10 @@ export const retrieveClientById = async (id: number): Promise<ClientResponse> =>
   return await http.get(`client/find/${id}`);
 }
 
+export const retrieveClientByIdNumber = async (nit: string): Promise<ClientResponse> => {
+  return await http.get(`client/login/${nit}`);
+}
+
 export const saveClient = async (body: ClientRequest): Promise<ClientResponse> => {
   return await http.post("client/save", body);
 }

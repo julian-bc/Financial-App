@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
 import './styles/Login.css';
+import useSession from '../auth/useSession';
+import { useNavigate } from 'react-router-dom';
+import { retrieveClientByIdNumber } from '../api/client.api';
 
 function Login() {
-  const [email, setEmail] = useState('');
+  // testNit = "1117499277"
+  const { login } = useSession();
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("Login Procesado:");
-    console.log("Usuario:", email);
-    console.log("NIT (enviado como password):", password);
-
-    window.location.href = '/'; 
+    try {
+      const response = await retrieveClientByIdNumber(password);
+      login(response);
+      navigate("/");
+    } catch (error) {
+      alert("Ingresa una constraseña valida (nit D:)")      
+      console.error(error);
+    }
   };
 
   return (
@@ -30,8 +39,6 @@ function Login() {
               id="email"
               className="form-input"
               placeholder="ejemplo@correo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               required 
             />
           </div>

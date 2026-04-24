@@ -1,13 +1,16 @@
 import { LogOut, User } from 'lucide-react';
 import './styles/Navbar.css';
+import useSession from '../auth/useSession';
 
 interface NavbarProps {
   name: string;
 }
 
 function Navbar({ name }: NavbarProps) {
+  const { logout } = useSession(); 
+  
   const handleLogout = () => {
-    window.location.href = '/login';
+    logout();
   };
 
   return (
