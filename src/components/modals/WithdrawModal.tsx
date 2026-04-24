@@ -4,13 +4,15 @@ import "./styles/WithdrawModal.css";
 
 interface WithdrawModalProps {
   onClose: () => void;
-}function WithdrawModal({ onClose }: WithdrawModalProps) {
+  originProductId: number;
+}
+
+function WithdrawModal({ onClose, originProductId }: WithdrawModalProps) {
   const [amount, setAmount] = useState<number>(0);
-  const destinyProductId = Number(localStorage.getItem("currentProductId"));
 
   async function handleConfirm() {    
     try {
-      await withdraw({ amount, destinyProductId });
+      await withdraw({ amount, originProductId });
       onClose();
     } catch (error) {
       console.error(`Error al retirar: ${error}`);

@@ -4,15 +4,17 @@ import "./styles/DepositModal.css";
 
 interface DepositModalProps {
   onClose: () => void;
+  originProductId: number;
 }
 
-function DepositModal ({ onClose }: DepositModalProps) {
+function DepositModal ({ onClose, originProductId }: DepositModalProps) {
   const [amount, setAmount] = useState(0);
-  const destinyProductId = Number(localStorage.getItem("currentProductId"));
 
   async function handleConfirm() {    
     try {
-      await consign({ amount, destinyProductId });
+      console.log("=" + amount);
+      console.log("=" + originProductId);
+      await consign({ amount, originProductId });
       onClose();
     } catch (error) {
       console.error(`Error consignando= ${error}`);

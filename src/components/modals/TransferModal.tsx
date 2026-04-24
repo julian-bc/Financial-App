@@ -2,12 +2,17 @@ import { useState } from "react";
 import { transfer } from "../../api/transaction.api";
 import "./styles/TransferModal.css";
 
-function TransferModal({ onClose }: { onClose: () => void }) {
+interface TransferModalProps {
+  onClose: () => void;
+  originProductId: number;
+}
+
+function TransferModal({ onClose, originProductId }: TransferModalProps) {
   const [amount, setAmount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [destinyProductId, setDestinyProductId] = useState<number | null>(null);
-  const originProductId = Number(localStorage.getItem("currentProductId"));
 
+  // supone un fetch de cuentas de manera dynamica segun parametro de busqueda del numero de cuenta
   const accounts = [
     { id: 101, number: "5544-2233", name: "Juan Pérez" },
     { id: 102, number: "9988-7766", name: "María López" },

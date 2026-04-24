@@ -9,6 +9,10 @@ export const retrieveProductById = async (id: number): Promise<ProductResponse> 
   return await http.get(`product/find/${id}`);
 }
 
+export const retrieveProductsByClientId = async (clientId: number): Promise<ProductResponse[]> => {
+  return await http.get(`product/find-by-client/${clientId}`);
+} 
+
 export const saveProduct = async (body: ProductRequest): Promise<ProductResponse> => {
   return await http.post("product/save", body);
 }
