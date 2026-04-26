@@ -93,3 +93,61 @@
 .btn-action span {
   color: #475569;
 }
+
+/* Botón de crear cuenta */
+.btn-create-account {
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 1.6 / 1;
+  border-radius: 18px;
+  border: 2px dashed #d1d5db;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Trebuchet MS', sans-serif;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-create-account::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.btn-create-account:hover {
+  border-color: #9ca3af;
+  background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-create-account:active {
+  transform: scale(0.98);
+}
+
+.create-account-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4b5563;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+
+.loading-text {
+  font-size: 16px;
+  color: #64748b;
+  text-align: center;
+  padding: 40px 20px;
+}

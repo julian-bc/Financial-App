@@ -1,68 +1,101 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { transfer } from "../../api/transaction.api";
+import { searchProductsByNumber } from "../../api/product.api";
 import "./styles/TransferModal.css";
 import { useProduct } from "../../auth/useProduct";
 import { useNotification } from "../../auth/useNotification";
 import { AxiosError } from "axios";
+import type { ProductResponseWithClient } from "../../api/interfaces/product.interfaces";
 
 interface TransferModalProps {
+  actualProductNumber: string;
   onClose: () => void;
   originProductId: number;
 }
 
-function TransferModal({ onClose, originProductId }: TransferModalProps) {
+function TransferModal({ onClose, originProductId, actualProductNumber }: TransferModalProps) {
   const [amount, setAmount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [destinyProductId, setDestinyProductId] = useState<number | null>(null);
+  const [searchResults, setSearchResults] = useState<ProductResponseWithClient[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const { setModifiedProducts } = useProduct();
   const { showNotification } = useNotification();
 
-  // supone un fetch de cuentas de manera dynamica segun parametro de busqueda del numero de cuenta
-  const accounts = [
-    { id: 101, number: "5544-2233", name: "Juan Pérez" },
-    { id: 102, number: "9988-7766", name: "María López" },
-    { id: 103, number: "1122-3344", name: "Carlos Ruiz" },
-  ];
+  // Búsqueda dinámica cuando el usuario escribe
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setSearchResults([]);
+      return;
+    }
 
-  const filtered = accounts.filter(acc => 
-    acc.number.includes(searchTerm) || 
-    acc.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    const performSearch = async () => {
+      setIsSearching(true);
+      try {
+        const results = await searchProductsByNumber(searchTerm);
+        setSearchResults(results.content);
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        const errorMessage = axiosError.response?.data as any;
+        const message =
+          errorMessage?.message ||
+          "Error al buscar cuentas. Por favor intente de nuevo.";
+        showNotification(message);
+        console.error("Error en la búsqueda:", message);
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    };
+
+    performSearch();
+  }, [searchTerm]);
 
   async function handleConfirm() {
-    const finalDestinyId = destinyProductId || Number(searchTerm);
-
-    if (!finalDestinyId || amount <= 0) {
-      showNotification("Por favor ingrese una cuenta de destino y un monto válido");
+    if (!destinyProductId || amount <= 0) {
+      showNotification(
+        "Por favor ingrese una cuenta de destino y un monto válido"
+      );
       return;
     }
 
     try {
-      await transfer({ 
-        amount, 
-        originProductId, 
-        destinyProductId: finalDestinyId 
+      await transfer({
+        amount,
+        originProductId,
+        destinyProductId,
       });
       setModifiedProducts(true);
       onClose();
+      showNotification("Transferencia realizada exitosamente");
     } catch (error) {
       const axiosError = error as AxiosError;
       const errorMessage = axiosError.response?.data as any;
-      const message = errorMessage?.message || "Error en la transferencia. Por favor intente de nuevo.";
+      const message =
+        errorMessage?.message ||
+        "Error en la transferencia. Por favor intente de nuevo.";
       showNotification(message);
       console.error("Error en la transferencia:", message);
     }
   }
 
+  const handleSelectAccount = (product: ProductResponseWithClient) => {
+    setSearchTerm(product.productNumber);
+    setDestinyProductId(product.id);
+    setSearchResults([]);
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2>Transferir Dinero</h2>
 
         <div className="search-box">
           <input
-            /* Clase específica añadida: input-transfer */
-            className="modal-input input-transfer" 
+            className="modal-input input-transfer"
             type="text"
             placeholder="Número de cuenta o nombre..."
             value={searchTerm}
@@ -71,31 +104,45 @@ function TransferModal({ onClose, originProductId }: TransferModalProps) {
               setDestinyProductId(null);
             }}
           />
-          
-          {searchTerm && !destinyProductId && filtered.length > 0 && (
+
+          {searchTerm && !destinyProductId && searchResults.length > 0 && (
             <div className="results-list">
-              {filtered.map(acc => (
-                <div 
-                  key={acc.id} 
-                  className="result-item" 
-                  onClick={() => {
-                    setSearchTerm(acc.number);
-                    setDestinyProductId(acc.id);
-                  }}
+              {searchResults.filter((product) => product.productNumber !== actualProductNumber).map((product) => (
+                <div
+                  key={product.id}
+                  className="result-item"
+                  onClick={() => handleSelectAccount(product)}
                 >
-                  <p className="item-name">{acc.name}</p>
-                  <p className="item-number">{acc.number}</p>
+                  <p className="item-name">
+                    {product.client.firstName} {product.client.lastName}
+                  </p>
+                  <p className="item-number">{product.productNumber} {product.productType}</p>
                 </div>
               ))}
+            </div>
+          )}
+
+          {searchTerm && !destinyProductId && searchResults.length === 0 && !isSearching && (
+            <div className="results-list">
+              <div className="result-item no-results">
+                <p>No se encontraron cuentas</p>
+              </div>
+            </div>
+          )}
+
+          {isSearching && (
+            <div className="results-list">
+              <div className="result-item searching">
+                <p>Buscando...</p>
+              </div>
             </div>
           )}
         </div>
 
         <input
-          /* Clase específica añadida: input-transfer */
           className="modal-input input-transfer no-arrows"
           type="number"
-          value={amount === 0 ? '' : amount}
+          value={amount === 0 ? "" : amount}
           onChange={(e) => setAmount(Number(e.target.value))}
           placeholder="Monto a enviar"
         />

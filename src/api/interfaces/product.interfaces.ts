@@ -26,3 +26,22 @@ export interface ProductResponse extends ProductRequest {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface Client {
+  firstName: string;
+  lastName: string;
+}
+
+export interface ProductResponseWithClient extends ProductResponse {
+  client: Client;
+  createdDate: string;
+  lastModifiedDate: string;
+}
+
+export interface PaginatedProductResponse {
+  content: ProductResponseWithClient[];
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+}

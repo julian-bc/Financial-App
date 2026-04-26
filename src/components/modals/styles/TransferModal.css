@@ -135,3 +135,27 @@
   opacity: 0.9;
   transform: translateY(-1px);
 }
+
+.result-item.no-results,
+.result-item.searching {
+  cursor: default;
+  text-align: center;
+  padding: 16px 12px;
+}
+
+.result-item.no-results:hover,
+.result-item.searching:hover {
+  background: transparent;
+}
+
+.result-item.no-results p,
+.result-item.searching p {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.result-item.searching p {
+  color: #64748b;
+  font-weight: 500;
+}

@@ -1,5 +1,5 @@
 import { http } from "./config/axios.instance";
-import type { ProductRequest, ProductResponse } from "./interfaces/product.interfaces";
+import type { ProductRequest, ProductResponse, PaginatedProductResponse } from "./interfaces/product.interfaces";
 
 export const retrieveProducts = async (): Promise<ProductResponse[]> => {
   const response = await http.get("product/find-all");
@@ -13,6 +13,13 @@ export const retrieveProductById = async (id: number): Promise<ProductResponse> 
 
 export const retrieveProductsByClientId = async (clientId: number): Promise<ProductResponse[]> => {
   const response = await http.get(`product/find-by-client/${clientId}`);
+  return response.data;
+}
+
+export const searchProductsByNumber = async (productNumber: string): Promise<PaginatedProductResponse> => {
+  const response = await http.get(`product/find-by-number`, {
+    params: { productNumber }
+  });
   return response.data;
 } 
 

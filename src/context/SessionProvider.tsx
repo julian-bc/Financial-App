@@ -19,7 +19,7 @@ function SessionProvider ({children}: Props) {
   }
 
   const register = async (clientData: ClientRequest) => {
-    await saveClient(clientData);
+   await saveClient(clientData);
   }
 
   const logout = () => {

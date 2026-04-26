@@ -30,10 +30,11 @@ function ProductProvider({ children }: Props) {
   // Refrescar productos cuando modifiedProducts cambia a true
   useEffect(() => {
     if (modifiedProducts && user) {
+        console.log("Productos modificados, refrescando lista...");
       const refreshProducts = async () => {
         try {
           setLoading(true);
-            const clientId = user.data?.id;
+            const clientId = user.id;
           if (clientId) {
             const products = await retrieveProductsByClientId(clientId);
             setUserProductsState(products);
@@ -55,7 +56,7 @@ function ProductProvider({ children }: Props) {
       const loadInitialProducts = async () => {
         try {
           setLoading(true);
-          const clientId = user.data?.id;
+          const clientId = user.id;
           if (clientId) {
             const products = await retrieveProductsByClientId(clientId);
             setUserProductsState(products);
