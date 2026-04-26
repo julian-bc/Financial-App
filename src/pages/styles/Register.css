@@ -135,22 +135,35 @@
   transform: translateY(0);
 }
 
+.btn-register:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 /* Footer con enlace al login */
-.register-footer {
+.auth-redirect {
   text-align: center;
   font-size: 14px;
   color: #64748b;
   margin-top: 24px;
 }
 
-.register-footer a {
-  color: #0284c7;
-  text-decoration: none;
-  font-weight: 700;
-  margin-left: 4px;
+.auth-redirect p {
+  margin: 0;
 }
 
-.register-footer a:hover {
+.auth-link {
+  color: #0284c7;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 6px;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #0369a1;
   text-decoration: underline;
 }
 

@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
 import './styles/Login.css';
 import useSession from '../auth/useSession';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { retrieveClientByIdNumber } from '../api/client.api';
+import { useNotification } from '../auth/useNotification';
+import { AxiosError } from 'axios';
 
 function Login() {
   // testNit = "1117499277"
   const { login } = useSession();
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
 
     try {
       const response = await retrieveClientByIdNumber(password);
       login(response);
       navigate("/");
     } catch (error) {
-      alert("Ingresa una constraseña valida (nit D:)")      
+      const axiosError = error as AxiosError;
+      const errorMessage = axiosError.response?.data as any;
+      const message = errorMessage?.message || "Ingresa una contraseña válida";
+      showNotification(message);
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,6 +50,7 @@ function Login() {
               className="form-input"
               placeholder="ejemplo@correo.com"
               required 
+              disabled={isLoading}
             />
           </div>
 
@@ -54,13 +65,21 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
 
-          <button type="submit" className="btn-login">
-            Iniciar Sesión
+          <button type="submit" className="btn-login" disabled={isLoading}>
+            {isLoading ? "Cargando..." : "Iniciar Sesión"}
           </button>
         </form>
+
+        <div className="auth-redirect">
+          <p>
+            ¿No tienes una cuenta? 
+            <Link to="/register" className="auth-link">Regístrate aquí</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

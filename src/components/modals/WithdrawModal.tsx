@@ -2,6 +2,8 @@ import { useState } from "react";
 import { withdraw } from "../../api/transaction.api";
 import "./styles/WithdrawModal.css";
 import { useProduct } from "../../auth/useProduct";
+import { useNotification } from "../../auth/useNotification";
+import { AxiosError } from "axios";
 
 interface WithdrawModalProps {
   onClose: () => void;
@@ -11,6 +13,7 @@ interface WithdrawModalProps {
 function WithdrawModal({ onClose, originProductId }: WithdrawModalProps) {
   const [amount, setAmount] = useState<number>(0);
   const { setModifiedProducts } = useProduct();
+  const { showNotification } = useNotification();
 
   async function handleConfirm() {    
     try {
@@ -18,7 +21,11 @@ function WithdrawModal({ onClose, originProductId }: WithdrawModalProps) {
       setModifiedProducts(true);
       onClose();
     } catch (error) {
-      console.error(`Error al retirar: ${error}`);
+      const axiosError = error as AxiosError;
+      const errorMessage = axiosError.response?.data as any;
+      const message = errorMessage?.message || "Error al retirar. Por favor intente de nuevo.";
+      showNotification(message);
+      console.error(`Error al retirar: ${message}`);
     }
   }
 

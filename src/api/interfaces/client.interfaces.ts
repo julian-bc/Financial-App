@@ -6,7 +6,7 @@ export const idTypes = {
 } as const;
 
 export interface ClientRequest {
-  idTypes: typeof idTypes;
+  idType: typeof idTypes;
   idNum: string;
   firstName: string;
   lastName: string;

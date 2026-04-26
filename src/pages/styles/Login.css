@@ -78,3 +78,34 @@
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(2, 132, 199, 0.2);
 }
+
+.btn-login:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.auth-redirect {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.auth-redirect p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.auth-link {
+  margin-left: 6px;
+  color: #0284c7;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #0369a1;
+  text-decoration: underline;
+}
