@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { transfer } from "../../api/transaction.api";
 import "./styles/TransferModal.css";
+import { useProduct } from "../../auth/useProduct";
+import { useNotification } from "../../auth/useNotification";
+import { AxiosError } from "axios";
 
 interface TransferModalProps {
   onClose: () => void;
@@ -11,6 +14,8 @@ function TransferModal({ onClose, originProductId }: TransferModalProps) {
   const [amount, setAmount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [destinyProductId, setDestinyProductId] = useState<number | null>(null);
+  const { setModifiedProducts } = useProduct();
+  const { showNotification } = useNotification();
 
   // supone un fetch de cuentas de manera dynamica segun parametro de busqueda del numero de cuenta
   const accounts = [
@@ -28,7 +33,7 @@ function TransferModal({ onClose, originProductId }: TransferModalProps) {
     const finalDestinyId = destinyProductId || Number(searchTerm);
 
     if (!finalDestinyId || amount <= 0) {
-      alert("Por favor ingrese una cuenta de destino y un monto válido");
+      showNotification("Por favor ingrese una cuenta de destino y un monto válido");
       return;
     }
 
@@ -38,9 +43,14 @@ function TransferModal({ onClose, originProductId }: TransferModalProps) {
         originProductId, 
         destinyProductId: finalDestinyId 
       });
+      setModifiedProducts(true);
       onClose();
     } catch (error) {
-      console.error("Error en la transferencia:", error);
+      const axiosError = error as AxiosError;
+      const errorMessage = axiosError.response?.data as any;
+      const message = errorMessage?.message || "Error en la transferencia. Por favor intente de nuevo.";
+      showNotification(message);
+      console.error("Error en la transferencia:", message);
     }
   }
 

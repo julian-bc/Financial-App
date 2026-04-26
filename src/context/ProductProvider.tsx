@@ -248,6 +248,7 @@ function ProductProvider({ children }: Props) {
     clearUserProducts,
     setLoading,
     setError,
+    setModifiedProducts,
     // Métodos de API
     getAllProducts,
     getProductById,

@@ -4,27 +4,30 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import SessionProvider from './context/SessionProvider';
 import ProductProvider from './context/ProductProvider';
+import NotificationProvider from './context/NotificationProvider';
 import ProtectedRoute from './auth/ProtectedRoute';
 
 function App() {
   return (
-    <SessionProvider>
-      <ProductProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route 
-              index 
-              element={
-                <ProtectedRoute>
-                  <Account/>
-                </ProtectedRoute>
-              } />
-            <Route path='/login' element={<Login/>} />
-            <Route path='/register' element={<Register/>} />
-          </Routes>
-        </BrowserRouter>
-      </ProductProvider>
-    </SessionProvider>
+    <NotificationProvider>
+      <SessionProvider>
+        <ProductProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route 
+                index 
+                element={
+                  <ProtectedRoute>
+                    <Account/>
+                  </ProtectedRoute>
+                } />
+              <Route path='/login' element={<Login/>} />
+              <Route path='/register' element={<Register/>} />
+            </Routes>
+          </BrowserRouter>
+        </ProductProvider>
+      </SessionProvider>
+    </NotificationProvider>
   );
 }
 

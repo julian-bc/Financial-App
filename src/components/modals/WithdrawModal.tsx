@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { withdraw } from "../../api/transaction.api";
 import "./styles/WithdrawModal.css";
+import { useProduct } from "../../auth/useProduct";
 
 interface WithdrawModalProps {
   onClose: () => void;
@@ -9,10 +10,12 @@ interface WithdrawModalProps {
 
 function WithdrawModal({ onClose, originProductId }: WithdrawModalProps) {
   const [amount, setAmount] = useState<number>(0);
+  const { setModifiedProducts } = useProduct();
 
   async function handleConfirm() {    
     try {
       await withdraw({ amount, originProductId });
+      setModifiedProducts(true);
       onClose();
     } catch (error) {
       console.error(`Error al retirar: ${error}`);

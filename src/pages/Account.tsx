@@ -23,6 +23,20 @@ function Account() {
   // trae las tarjetas de la api, las 2 AHORRO Y CORRIENTE utilizando algun dato del usuario del localstorage guardado como user, para acceder a los datos usar user.data
   const currentCard = userProducts.find(p => p.productType === activeType) || userProducts[0];
 
+  const mapProductToCard = (product: typeof currentCard) => {
+    if (!product) return null;
+    return {
+      cardNumber: product.productNumber,
+      cardHolder: user.data.firstName,
+      balance: product.balance,
+      type: product.productType === 'AHORROS' ? 'SAVING' : 'CURRENT' as 'SAVING' | 'CURRENT',
+      status: product.productState as 'ACTIVE' | 'INACTIVE' | 'CANCELLED',
+      isExemptGMF: product.gmfExempt,
+    };
+  };
+
+  const cardData = mapProductToCard(currentCard);
+
   if (userProducts.length === 0) {
     return <p>Cargando cuentas...</p>; 
   }
@@ -32,11 +46,16 @@ function Account() {
       <Navbar name={user.data.firstName}/>
 
       <div className='account-container'>
-        <Card 
-          {...currentCard}
-          type={currentCard.type as 'SAVING' | 'CURRENT'}
-          status={currentCard.status as 'ACTIVE' | 'INACTIVE' | 'CANCELLED'}
-        />
+        {cardData && (
+          <Card 
+            cardNumber={cardData.cardNumber}
+            cardHolder={cardData.cardHolder}
+            balance={cardData.balance}
+            type={cardData.type}
+            status={cardData.status}
+            isExemptGMF={cardData.isExemptGMF}
+          />
+        )}
 
         <div className='actions-wrapper'>
           <button className='btn-action deposit' onClick={() => setIsDepositOpen(true)}>

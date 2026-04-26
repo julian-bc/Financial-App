@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { consign } from "../../api/transaction.api";
 import "./styles/DepositModal.css";
+import { useProduct } from "../../auth/useProduct";
+import { useNotification } from "../../auth/useNotification";
+import { AxiosError } from "axios";
 
 interface DepositModalProps {
   onClose: () => void;
@@ -9,15 +12,22 @@ interface DepositModalProps {
 
 function DepositModal ({ onClose, originProductId }: DepositModalProps) {
   const [amount, setAmount] = useState(0);
+  const { setModifiedProducts } = useProduct();
+  const { showNotification } = useNotification();
 
   async function handleConfirm() {    
     try {
       console.log("=" + amount);
       console.log("=" + originProductId);
       await consign({ amount, originProductId });
+      setModifiedProducts(true);
       onClose();
     } catch (error) {
-      console.error(`Error consignando= ${error}`);
+      const axiosError = error as AxiosError;
+      const errorMessage = axiosError.response?.data as any;
+      const message = errorMessage?.message || "Error al consignar. Por favor intente de nuevo.";
+      showNotification(message);
+      console.error(`Error consignando: ${message}`);
     }
   }
 

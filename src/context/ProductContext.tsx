@@ -12,6 +12,7 @@ export interface ProductContextType {
   clearUserProducts: () => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setModifiedProducts: (modified: boolean) => void;
   // Métodos de API
   getAllProducts: () => Promise<ProductResponse[]>;
   getProductById: (id: number) => Promise<ProductResponse | null>;
@@ -35,6 +36,7 @@ export const ProductContext = createContext<ProductContextType>({
   clearUserProducts: () => {},
   setLoading: () => {},
   setError: () => {},
+  setModifiedProducts: () => {},
   getAllProducts: async () => [],
   getProductById: async () => null,
   createProduct: async () => null,
