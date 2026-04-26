@@ -1,0 +1,99 @@
+/* Reutilizamos el overlay y contenido para mantener consistencia */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 32px;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  font-family: 'Trebuchet MS', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-content h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.modal-input-withdraw {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #f1f5f9;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.modal-input-withdraw:focus {
+  border-color: #ef4444; /* Rojo para enfoque en retiro */
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Botón específico para Retiro (Rojo) */
+.btn-confirm-withdraw {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background-color: #ef4444; /* Color rojo de tu botón 'withdraw' */
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-confirm-withdraw:hover, .btn-cancel:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-confirm-withdraw:active {
+  transform: scale(0.98);
+}
+
+/* Eliminar flechas en Chrome, Safari, Edge y Opera */
+.modal-input-withdraw::-webkit-outer-spin-button,
+.modal-input-withdraw::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Eliminar flechas en Firefox */
+.modal-input-withdraw[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
