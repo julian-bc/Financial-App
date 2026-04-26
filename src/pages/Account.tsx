@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Card from '../components/Card'
 import './styles/Account.css'
 import { MinusCircle, PlusCircle, Send } from 'lucide-react';
@@ -9,44 +9,23 @@ import DepositModal from '../components/modals/DepositModal';
 import WithdrawModal from '../components/modals/WithdrawModal';
 import TransferModal from '../components/modals/TransferModal';
 import useSession from '../auth/useSession';
-import { retrieveProductsByClientId } from '../api/product.api';
+import { useProduct } from '../auth/useProduct';
 
 function Account() {
   const { user } = useSession();
+  const { userProducts } = useProduct();
 
-  const [activeType, setActiveType] = useState<'SAVING' | 'CURRENT'>('SAVING');
-  const [cardsData, setCardsData] = useState<any[]>([]);
-
-  async function getCards (currentUserId: number) {
-    try {
-      const result = await retrieveProductsByClientId(currentUserId);
-      const data = result.data; 
-      const updatedResult = data.map((card: any) => ({
-        ...card,
-        cardNumber: card.productNumber,
-        cardHolder: user.data.firstName,
-      }));
-      console.log(updatedResult)
-      setCardsData(updatedResult);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    getCards(user.data.id);
-  }, []);
-
-  // trae las tarjetas de la api, las 2 AHORRO Y CORRIENTE utilizando algun dato del usuario del localstorage guardado como user, para acceder a los datos usar user.data
-  const currentCard = cardsData.find(c => c.type === activeType) || cardsData[0];
-
-  if (cardsData.length === 0) {
-    return <p>Cargando cuentas...</p>; 
-  }
-
+  const [activeType, setActiveType] = useState<'AHORROS' | 'CORRIENTE'>('AHORROS');
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [isTransferOpen, setIsTransferOpen] = useState(false);
+
+  // trae las tarjetas de la api, las 2 AHORRO Y CORRIENTE utilizando algun dato del usuario del localstorage guardado como user, para acceder a los datos usar user.data
+  const currentCard = userProducts.find(p => p.productType === activeType) || userProducts[0];
+
+  if (userProducts.length === 0) {
+    return <p>Cargando cuentas...</p>; 
+  }
 
   return (
     <>
@@ -78,14 +57,14 @@ function Account() {
 
         <div className='controls-wrapper'>
           <button 
-            className={`btn-switch ${activeType === 'SAVING' ? 'active-saving' : ''}`}
-            onClick={() => setActiveType('SAVING')}
+            className={`btn-switch ${activeType === 'AHORROS' ? 'active-saving' : ''}`}
+            onClick={() => setActiveType('AHORROS')}
           >
             Cuenta Ahorros
           </button>
           <button 
-            className={`btn-switch ${activeType === 'CURRENT' ? 'active-current' : ''}`}
-            onClick={() => setActiveType('CURRENT')}
+            className={`btn-switch ${activeType === 'CORRIENTE' ? 'active-current' : ''}`}
+            onClick={() => setActiveType('CORRIENTE')}
           >
             Cuenta Corriente
           </button>

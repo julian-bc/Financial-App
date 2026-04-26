@@ -9,10 +9,13 @@ export const accountState = {
   CANCELLED: "CANCELLED"
 } as const;
 
+export type AccountType = typeof accountType[keyof typeof accountType];
+export type AccountState = typeof accountState[keyof typeof accountState];
+
 export interface ProductRequest {
   clientId: number;
-  productType: typeof accountType;
-  productState: typeof accountState;
+  productType: AccountType;
+  productState: AccountState;
   gmfExempt: boolean;
 }
 
