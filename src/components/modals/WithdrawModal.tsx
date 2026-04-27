@@ -2,6 +2,7 @@ import { useState } from "react";
 import { withdraw } from "../../api/transaction.api";
 import "./styles/WithdrawModal.css";
 import { useProduct } from "../../auth/useProduct";
+import { useTransaction } from "../../auth/useTransaction";
 import { useNotification } from "../../auth/useNotification";
 import { AxiosError } from "axios";
 
@@ -13,13 +14,16 @@ interface WithdrawModalProps {
 function WithdrawModal({ onClose, originProductId }: WithdrawModalProps) {
   const [amount, setAmount] = useState<number>(0);
   const { setModifiedProducts } = useProduct();
+  const { setModifiedTransactions } = useTransaction();
   const { showNotification } = useNotification();
 
   async function handleConfirm() {    
     try {
       await withdraw({ amount, originProductId });
       setModifiedProducts(true);
+      setModifiedTransactions(true);
       onClose();
+      showNotification("Retiro realizado exitosamente");
     } catch (error) {
       const axiosError = error as AxiosError;
       const errorMessage = axiosError.response?.data as any;

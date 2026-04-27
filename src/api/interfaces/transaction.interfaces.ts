@@ -1,8 +1,10 @@
 export const transactionType = {
-  CONSIGNMENT: "CONSIGMENT",
+  CONSIGNMENT: "CONSIGNMENT",
   WITHDRAWAL: "WITHDRAWAL",
   TRANSFERENCE: "TRANSFERENCE"
 } as const;
+
+export type TransactionType = typeof transactionType[keyof typeof transactionType];
 
 export interface TransactionRequest {
   amount: number;
@@ -12,6 +14,14 @@ export interface TransactionRequest {
 
 export interface TransactionResponse extends TransactionRequest {
   id: number;
-  transactionType: typeof transactionType;
-  transactionDate: Date;
+  transactionType: TransactionType;
+  transactionDate: string;
+}
+
+export interface PaginatedTransactionResponse {
+  content: TransactionResponse[];
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
 }

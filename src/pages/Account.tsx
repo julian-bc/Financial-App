@@ -4,19 +4,19 @@ import './styles/Account.css'
 import { MinusCircle, PlusCircle, Send } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import TransactionList from '../components/TransactionList';
-import { mockTransactions } from '../assets/mockData/transactions';
 import DepositModal from '../components/modals/DepositModal';
 import WithdrawModal from '../components/modals/WithdrawModal';
 import TransferModal from '../components/modals/TransferModal';
 import CreateAccountModal from '../components/modals/CreateAccountModal';
+import TransactionProvider from '../context/TransactionProvider';
 import useSession from '../auth/useSession';
 import { useProduct } from '../auth/useProduct';
+import { useTransaction } from '../auth/useTransaction';
 
-function Account() {
+function AccountContent() {
   const { user } = useSession();
   const { userProducts, loading } = useProduct();
-
-  console.log(userProducts);
+  const { recentTransactions, setModifiedTransactions } = useTransaction();
 
   const [activeType, setActiveType] = useState<'AHORROS' | 'CORRIENTE'>('AHORROS');
   const [isDepositOpen, setIsDepositOpen] = useState(false);
@@ -27,6 +27,7 @@ function Account() {
   // trae las tarjetas de la api, las 2 AHORRO Y CORRIENTE utilizando algun dato del usuario del localstorage guardado como user, para acceder a los datos usar user
   const currentCard = userProducts.find(p => p.productType === activeType) || userProducts[0];
   const hasAccountOfType = userProducts.some(p => p.productType === activeType);
+  const hasMorePages = recentTransactions.length >= 3;
 
   const mapProductToCard = (product: typeof currentCard) => {
     if (!product) return null;
@@ -127,7 +128,7 @@ function Account() {
           </button>
         </div>
 
-        {hasAccountOfType && <TransactionList transactions={mockTransactions}/>}
+        {hasAccountOfType && <TransactionList transactions={recentTransactions} hasMorePages={hasMorePages}/>}
       </div>
 
       {isDepositOpen && hasAccountOfType && (
@@ -149,7 +150,17 @@ function Account() {
         />
       )}
     </>
+  );
+}
 
+function Account() {
+  const { userProducts } = useProduct();
+  const currentProduct = userProducts[0];
+
+  return (
+    <TransactionProvider productNumber={currentProduct?.productNumber}>
+      <AccountContent />
+    </TransactionProvider>
   );
 }
 

@@ -30,7 +30,6 @@ function ProductProvider({ children }: Props) {
   // Refrescar productos cuando modifiedProducts cambia a true
   useEffect(() => {
     if (modifiedProducts && user) {
-        console.log("Productos modificados, refrescando lista...");
       const refreshProducts = async () => {
         try {
           setLoading(true);

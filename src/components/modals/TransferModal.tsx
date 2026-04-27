@@ -3,6 +3,7 @@ import { transfer } from "../../api/transaction.api";
 import { searchProductsByNumber } from "../../api/product.api";
 import "./styles/TransferModal.css";
 import { useProduct } from "../../auth/useProduct";
+import { useTransaction } from "../../auth/useTransaction";
 import { useNotification } from "../../auth/useNotification";
 import { AxiosError } from "axios";
 import type { ProductResponseWithClient } from "../../api/interfaces/product.interfaces";
@@ -20,6 +21,7 @@ function TransferModal({ onClose, originProductId, actualProductNumber }: Transf
   const [searchResults, setSearchResults] = useState<ProductResponseWithClient[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const { setModifiedProducts } = useProduct();
+  const { setModifiedTransactions } = useTransaction();
   const { showNotification } = useNotification();
 
   // Búsqueda dinámica cuando el usuario escribe
@@ -66,6 +68,7 @@ function TransferModal({ onClose, originProductId, actualProductNumber }: Transf
         destinyProductId,
       });
       setModifiedProducts(true);
+      setModifiedTransactions(true);
       onClose();
       showNotification("Transferencia realizada exitosamente");
     } catch (error) {

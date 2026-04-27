@@ -2,6 +2,7 @@ import { useState } from "react"
 import { consign } from "../../api/transaction.api";
 import "./styles/DepositModal.css";
 import { useProduct } from "../../auth/useProduct";
+import { useTransaction } from "../../auth/useTransaction";
 import { useNotification } from "../../auth/useNotification";
 import { AxiosError } from "axios";
 
@@ -13,15 +14,16 @@ interface DepositModalProps {
 function DepositModal ({ onClose, originProductId }: DepositModalProps) {
   const [amount, setAmount] = useState(0);
   const { setModifiedProducts } = useProduct();
+  const { setModifiedTransactions } = useTransaction();
   const { showNotification } = useNotification();
 
   async function handleConfirm() {    
     try {
-      console.log("=" + amount);
-      console.log("=" + originProductId);
       await consign({ amount, originProductId });
       setModifiedProducts(true);
+      setModifiedTransactions(true);
       onClose();
+      showNotification("Depósito realizado exitosamente");
     } catch (error) {
       const axiosError = error as AxiosError;
       const errorMessage = axiosError.response?.data as any;

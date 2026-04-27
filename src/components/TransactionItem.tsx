@@ -10,13 +10,16 @@ const typeConfig = {
 
 function TransactionItem({ transaction }: any) {
   const config = typeConfig[transaction.transactionType as keyof typeof typeConfig];
-  
+
+  const [day, month, year] = transaction.transactionDate.split(' ')[0].split('.');
+  const transactionDate = new Date(Number(year), Number(month) - 1, Number(day));
+
   // Formateador de fecha: "14 Abril 2026"
   const dateFormatted = new Intl.DateTimeFormat('es-ES', {
     day: 'numeric',
     month: 'long',
     year: 'numeric'
-  }).format(new Date(transaction.transactionDate));
+  }).format(transactionDate);
 
   // Lógica de signo y color
   const isNegative = transaction.transactionType !== 'CONSIGNMENT';
