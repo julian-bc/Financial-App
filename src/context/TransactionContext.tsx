@@ -5,8 +5,6 @@ export interface TransactionContextType {
   recentTransactions: TransactionResponse[];
   loading: boolean;
   modifiedTransactions: boolean;
-  productNumber: string | null;
-  setProductNumber: (productNumber: string | null) => void;
   setModifiedTransactions: (value: boolean) => void;
 }
 

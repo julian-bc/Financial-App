@@ -48,7 +48,7 @@ function TransactionProvider({ children, productNumber }: Props) {
     recentTransactions,
     loading,
     modifiedTransactions,
-    setModifiedTransactions,
+    setModifiedTransactions
   };
 
   return (

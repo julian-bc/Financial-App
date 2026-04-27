@@ -18,7 +18,6 @@ import {
   deleteProduct,
 } from "../api/product.api";
 import { useNotification } from "../auth/useNotification";
-import type { AxiosError } from "axios";
 
 type Props = {
   children: ReactNode;

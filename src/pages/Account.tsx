@@ -30,8 +30,6 @@ function AccountContent() {
     deleteProductHandler,
     activateProduct,
     disableProductHandler,
-    disableExemptGMFHandler,
-    exemptGMFHandler,
     cancelProductHandler,
   } = useProduct();
   const { recentTransactions } = useTransaction();

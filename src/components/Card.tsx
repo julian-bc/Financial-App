@@ -23,10 +23,6 @@ const formatCardNumber = (number: string) => {
   return "**** **** **** " + number.slice(-4);
 }
 
-const formatCardAmount = (amount: string) => {
-  return amount.replaceAll(amount, "*".repeat(amount.length));
-}
-
 export default function Card({ 
   cardNumber, 
   cardHolder, 
@@ -37,7 +33,6 @@ export default function Card({
   currency = 'COP'
 }: CardProps) {
   const cardTypeClass = type === 'SAVING' ? 'card-saving' : 'card-current';
-  const [showAmount, setShowAmount] = useState<boolean>(false);
   const [showCardNumber, setShowCardNumber] = useState<boolean>(false);
   const st = statusConfig[status];
 
