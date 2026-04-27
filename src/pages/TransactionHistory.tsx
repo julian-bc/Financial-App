@@ -11,7 +11,7 @@ import { ChevronLeft } from "lucide-react";
 
 function TransactionHistory() {
   const { user } = useSession();
-  const { userProducts } = useProduct();
+  const { userProducts, currentProductNumber } = useProduct();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -21,10 +21,10 @@ function TransactionHistory() {
   const [totalElements, setTotalElements] = useState(0);
 
   const currentPage = parseInt(searchParams.get("page") || "0");
-  const pageSize = parseInt(searchParams.get("size") || "3");
+  const pageSize = parseInt(searchParams.get("size") || "10");
 
   // Get first product's productNumber (for now, default to first account)
-  const currentProduct = userProducts[0];
+  const currentProduct = userProducts.find(p => p.productNumber === currentProductNumber) || userProducts[0];
 
   useEffect(() => {
     if (!currentProduct || !currentProduct.productNumber) {

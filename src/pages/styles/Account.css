@@ -76,6 +76,11 @@
   font-weight: 600;
 }
 
+.btn-view-history:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
 .btn-action:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
@@ -133,6 +138,52 @@
 
 .btn-create-account:active {
   transform: scale(0.98);
+}
+
+.btn-delete-account {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;;
+  margin-top: 12px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-family: 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  background-color: #c72002;
+}
+
+.btn-delete-account-disabled {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;;
+  margin-top: 12px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-family: 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  background-color: #655a58;
+}
+
+.btn-delete-account:hover {
+  background-color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-delete-account-disabled:hover {
+  background-color: #7f7a7a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3);
 }
 
 .create-account-text {

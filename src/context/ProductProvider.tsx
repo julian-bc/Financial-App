@@ -1,7 +1,10 @@
 import { useState, useContext, useEffect, type ReactNode } from "react";
 import { ProductContext, type ProductContextType } from "./ProductContext";
 import { SessionContext } from "./SessionContext";
-import type { ProductResponse, ProductRequest } from "../api/interfaces/product.interfaces";
+import type {
+  ProductResponse,
+  ProductRequest,
+} from "../api/interfaces/product.interfaces";
 import {
   retrieveProducts,
   retrieveProductById,
@@ -14,6 +17,8 @@ import {
   disableExemptGMF,
   deleteProduct,
 } from "../api/product.api";
+import { useNotification } from "../auth/useNotification";
+import type { AxiosError } from "axios";
 
 type Props = {
   children: ReactNode;
@@ -21,11 +26,15 @@ type Props = {
 
 function ProductProvider({ children }: Props) {
   const { user } = useContext(SessionContext);
-  
+
   const [userProducts, setUserProductsState] = useState<ProductResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [modifiedProducts, setModifiedProducts] = useState<boolean>(false);
+  const [currentProductNumber, setCurrentProductNumberState] = useState<
+    string | null
+  >(null);
+  const { showNotification } = useNotification();
 
   // Refrescar productos cuando modifiedProducts cambia a true
   useEffect(() => {
@@ -33,7 +42,7 @@ function ProductProvider({ children }: Props) {
       const refreshProducts = async () => {
         try {
           setLoading(true);
-            const clientId = user.id;
+          const clientId = user.id;
           if (clientId) {
             const products = await retrieveProductsByClientId(clientId);
             setUserProductsState(products);
@@ -69,7 +78,7 @@ function ProductProvider({ children }: Props) {
       };
       loadInitialProducts();
     }
-    
+
     // Limpiar productos cuando se desloguea
     if (!user) {
       setUserProductsState([]);
@@ -88,19 +97,23 @@ function ProductProvider({ children }: Props) {
 
   const removeUserProduct = (productId: number) => {
     setUserProductsState((prevProducts) =>
-      prevProducts.filter((product) => product.id !== productId)
+      prevProducts.filter((product) => product.id !== productId),
     );
   };
 
   const updateUserProduct = (product: ProductResponse) => {
     setUserProductsState((prevProducts) =>
-      prevProducts.map((p) => (p.id === product.id ? product : p))
+      prevProducts.map((p) => (p.id === product.id ? product : p)),
     );
   };
 
   const clearUserProducts = () => {
     setUserProductsState([]);
     setError(null);
+  };
+
+  const setCurrentProductNumber = (productNumber: string) => {
+    setCurrentProductNumberState(productNumber);
   };
 
   // Métodos para llamar a los endpoints de la API
@@ -118,7 +131,9 @@ function ProductProvider({ children }: Props) {
     }
   };
 
-  const getProductById = async (id: number): Promise<ProductResponse | null> => {
+  const getProductById = async (
+    id: number,
+  ): Promise<ProductResponse | null> => {
     try {
       setLoading(true);
       const product = await retrieveProductById(id);
@@ -127,12 +142,12 @@ function ProductProvider({ children }: Props) {
       setError((err as Error).message);
       console.error("Error obteniendo producto por ID:", err);
       return null;
-    } finally {
-      setLoading(false);
     }
   };
 
-  const createProduct = async (body: ProductRequest): Promise<ProductResponse | null> => {
+  const createProduct = async (
+    body: ProductRequest,
+  ): Promise<ProductResponse | null> => {
     try {
       setLoading(true);
       const product = await saveProduct(body);
@@ -147,7 +162,9 @@ function ProductProvider({ children }: Props) {
     }
   };
 
-  const activateProduct = async (id: number): Promise<ProductResponse | null> => {
+  const activateProduct = async (
+    id: number,
+  ): Promise<ProductResponse | null> => {
     try {
       setLoading(true);
       const product = await activeProduct(id);
@@ -162,7 +179,9 @@ function ProductProvider({ children }: Props) {
     }
   };
 
-  const disableProductHandler = async (id: number): Promise<ProductResponse | null> => {
+  const disableProductHandler = async (
+    id: number,
+  ): Promise<ProductResponse | null> => {
     try {
       setLoading(true);
       const product = await disableProduct(id);
@@ -177,7 +196,9 @@ function ProductProvider({ children }: Props) {
     }
   };
 
-  const cancelProductHandler = async (id: number): Promise<ProductResponse | null> => {
+  const cancelProductHandler = async (
+    id: number,
+  ): Promise<ProductResponse | null> => {
     try {
       setLoading(true);
       const product = await cancelProduct(id);
@@ -186,13 +207,16 @@ function ProductProvider({ children }: Props) {
     } catch (err) {
       setError((err as Error).message);
       console.error("Error cancelando producto:", err);
+      showNotification("El Saldo de la Cuenta debe estar en 0 para ser cancelada. Por favor intente de nuevo.");
       return null;
     } finally {
       setLoading(false);
     }
   };
 
-  const exemptGMFHandler = async (id: number): Promise<ProductResponse | null> => {
+  const exemptGMFHandler = async (
+    id: number,
+  ): Promise<ProductResponse | null> => {
     try {
       setLoading(true);
       const product = await exemptGMF(id);
@@ -207,7 +231,9 @@ function ProductProvider({ children }: Props) {
     }
   };
 
-  const disableExemptGMFHandler = async (id: number): Promise<ProductResponse | null> => {
+  const disableExemptGMFHandler = async (
+    id: number,
+  ): Promise<ProductResponse | null> => {
     try {
       setLoading(true);
       const product = await disableExemptGMF(id);
@@ -227,10 +253,13 @@ function ProductProvider({ children }: Props) {
       setLoading(true);
       const result = await deleteProduct(id);
       setModifiedProducts(true);
+      setCurrentProductNumber("");
       return result;
     } catch (err) {
       setError((err as Error).message);
       console.error("Error eliminando producto:", err);
+      const message = "Error en la Eliminación, la Cuenta debe estar CANCELADA para ser eliminada. Por favor intente de nuevo.";
+      showNotification(message);
       return false;
     } finally {
       setLoading(false);
@@ -239,6 +268,7 @@ function ProductProvider({ children }: Props) {
 
   const value: ProductContextType = {
     userProducts,
+    currentProductNumber,
     loading,
     error,
     setUserProducts,
@@ -249,6 +279,7 @@ function ProductProvider({ children }: Props) {
     setLoading,
     setError,
     setModifiedProducts,
+    setCurrentProductNumber,
     // Métodos de API
     getAllProducts,
     getProductById,

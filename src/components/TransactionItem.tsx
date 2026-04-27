@@ -41,8 +41,7 @@ function TransactionItem({ transaction }: any) {
         <div className="info-details">
           <span className="date-text">{dateFormatted}</span>
           <span className="product-path">
-            {transaction.originProduct && `Desde: **${transaction.originProduct.cardNumber.slice(-4)}**`}
-            {transaction.destinyProduct && ` ➔ Para: **${transaction.destinyProduct.cardNumber.slice(-4)}**`}
+            {transaction.transactionType === 'TRANSFERENCE' && 'Transferencia entre cuentas'}
           </span>
         </div>
       </div>

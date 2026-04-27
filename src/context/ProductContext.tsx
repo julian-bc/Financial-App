@@ -23,6 +23,8 @@ export interface ProductContextType {
   exemptGMFHandler: (id: number) => Promise<ProductResponse | null>;
   disableExemptGMFHandler: (id: number) => Promise<ProductResponse | null>;
   deleteProductHandler: (id: number) => Promise<boolean>;
+  currentProductNumber?: string | null;
+  setCurrentProductNumber?: (productNumber: string) => void;
 }
 
 export const ProductContext = createContext<ProductContextType>({
@@ -46,4 +48,6 @@ export const ProductContext = createContext<ProductContextType>({
   exemptGMFHandler: async () => null,
   disableExemptGMFHandler: async () => null,
   deleteProductHandler: async () => false,
+  currentProductNumber: null,
+  setCurrentProductNumber: () => {},
 });

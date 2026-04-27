@@ -6,7 +6,7 @@ import type { TransactionResponse } from "../api/interfaces/transaction.interfac
 
 type Props = {
   children: ReactNode;
-  productNumber?: string;
+  productNumber?: string | null;
 };
 
 function TransactionProvider({ children, productNumber }: Props) {
@@ -24,6 +24,7 @@ function TransactionProvider({ children, productNumber }: Props) {
       return;
     }
 
+    console.log(productNumber);
     const loadRecentTransactions = async () => {
       setLoading(true);
       try {
