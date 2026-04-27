@@ -21,6 +21,31 @@
   gap: 16px;
 }
 
+.btn-view-history {
+  margin-top: 24px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  font-family: 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  background-color: #028fc7;
+}
+
+.btn-view-history:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
 .transaction-item {
   display: flex;
   align-items: center;
